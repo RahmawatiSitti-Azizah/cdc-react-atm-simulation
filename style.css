@@ -1,0 +1,42 @@
+#main-box{
+    justify-content: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    flex-direction: column;
+    justify-items: center;
+    width: 500px;
+    background-color: blue;
+    padding: 5px;
+    color: white;
+    border-radius: 10px;
+    border: 1px solid white ;
+}
+
+.input-wrapper{
+    width: 400px;
+    display: block; 
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.input-wrapper label{
+    display: inline-block; 
+    width: 150px;
+    text-align: end;
+}
+
+.inline-button{
+    display: flex; 
+    gap: 10px; 
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.btn-inline{
+    padding: 10px 20px
+}
+
+#text-error{
+    color: red;
+}
