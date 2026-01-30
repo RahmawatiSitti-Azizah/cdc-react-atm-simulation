@@ -9,6 +9,7 @@ class Account{
 let accountList = [new Account(11223344, "Rahmawati", 123123, 1000), new Account(11223355, "John Doe", 123123, 500)]
 const btnWithdraw = document.getElementById("btn-withdraw")
 const btnDeposit = document.getElementById("btn-deposit")
+const btnCheckBalance = document.getElementById("btn-check-balance")
 const inputAccount = document.getElementById("input-account")
 const inputPin = document.getElementById("input-pin")
 const inputAmount = document.getElementById("input-amount")
@@ -19,80 +20,73 @@ function getAccountInfo(){
     return accountList.find(acc => acc.accountNo == inputAccount.value && acc.pin == inputPin.value)
 }
 
-function searchAccount () {
-    console.log("inside search account")
+async function searchAccount () {
     return new Promise((resolve, reject) => {
         var account = getAccountInfo()
         console.log(account)
         if (account){
-            resolve(account)
+            setTimeout(()=>
+                resolve(account)
+            ,3000)
         }else{
+            console.log("in reject search account")
             reject("account not found please check again account number/pin");
         }
     })
 }
 
-function withdraw() {
-    searchAccount()
-    .then((result)=>{
-        return new Promise((resolve,reject)=>{
-            var amount = parseInt(inputAmount.value)
-            if(!isNaN(amount)){
-                if(amount>result.balance){
-                    reject("amount exceeding balance")
-                }else{
-                    result.balance -= amount
-                    resolve(result)
-                }
-            }else{
-                reject("amount should a number")
-            }
+async function menu(transaction){
+    try{
+        let result = await searchAccount();
+        console.log("in menu log")
+        transaction(result)
+        .then((result) => {
+            displayInfo(result,'Transaction Success!')
+        }).catch((error) => {
+            labelError.textContent = error
         })
-    })
-    .then((result) => {
-       displayInfo(result)
-    })
-    .catch((error)=> {
+    }catch(error){
         labelError.textContent = error
-    })
+    }
+    
 }
 
-function deposit() {
-    searchAccount()
-    .then((result)=>{
-        return new Promise((resolve,reject)=>{
-            var amount = parseInt(inputAmount.value)
-            if(!isNaN(amount)){
-                result.balance += amount
+let withdraw = async (result) => {
+    return new Promise((resolve,reject)=>{
+        var amount = parseInt(inputAmount.value)
+        if(!isNaN(amount)){
+            if(amount>result.balance){
+                reject("amount exceeding balance")
+            }else{
+                result.balance -= amount
                 resolve(result)
-            }else{
-                reject("amount should a number")
             }
-        })
-    })
-    .then((result) => {
-       displayInfo(result)
-    })
-    .catch((error)=> {
-        labelError.textContent = error
+        }else{
+            reject("amount should a number")
+        }
     })
 }
 
-function clearInput(){
-    inputAccount.value = ''
-    inputAmount.value = ''
-    inputPin.value = ''
+let deposit = async (result) => {
+    return new Promise((resolve,reject)=>{
+        var amount = parseInt(inputAmount.value)
+        if(!isNaN(amount)){
+            result.balance += amount
+            resolve(result)
+        }else{
+            reject("amount should a number")
+        }
+    })
 }
 
-function displayInfo({accountNo, accountHolderName, balance}){
+function displayInfo({accountNo, accountHolderName, balance}, header){
     displayBox.innerHTML = `
-    <h3>Transaction Success!</h3>
+    <h3>${header}</h3>
     <p>
         Account holder name = ${accountHolderName} <br> 
         Account number = ${accountNo}<br>
         Balance = ${balance}<br>
-    </p>`
-    clearInput();
+    </p>`;
 }
 
 let verifyCommon = (event) =>{
@@ -132,8 +126,18 @@ let verifyCommon = (event) =>{
     }
 }
 
-btnWithdraw.addEventListener('click', withdraw)
-btnDeposit.addEventListener('click', deposit)
+btnCheckBalance.addEventListener('click', 
+    () => searchAccount()
+    .then((result) => {
+       displayInfo(result, 'Current balance info!')
+    })
+    .catch((error)=> {
+        labelError.textContent = error
+    })
+)
+
+btnWithdraw.addEventListener('click', () => menu(withdraw))
+btnDeposit.addEventListener('click', () => menu(deposit))
 inputAccount.addEventListener('change',verifyCommon)
 inputAmount.addEventListener('change', verifyCommon)
 inputPin.addEventListener('change', verifyCommon)

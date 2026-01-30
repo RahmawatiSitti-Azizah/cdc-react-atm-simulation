@@ -10,24 +10,31 @@
             <div class="input-wrapper">
                 <h1>ATM Simulator</h1>
             </div>
-            <div class="input-wrapper">
-                <p id="text-error"></p>
+            <div>
+                <div class="input-wrapper">
+                    <p id="text-error"></p>
+                </div>
+                <div class="input-wrapper">
+                    <label>Account Number :</label>
+                    <input id="input-account" type="text" name="account">
+                </div>
+                <div class="input-wrapper">
+                    <label>Pin :</label>
+                    <input id="input-pin" type="password" name="pin">
+                </div>
+                <div class="inline-button">
+                    <button class="btn-inline" id="btn-check-balance">Check Balance</button>
+                </div>
             </div>
-            <div class="input-wrapper">
-                <label>Account Number :</label>
-                <input id="input-account" type="text" name="account">
-            </div>
-            <div class="input-wrapper">
-                <label>Pin :</label>
-                <input id="input-pin" type="password" name="pin">
-            </div>
-            <div class="input-wrapper">
-                <label>Amount :</label>
-                <input id="input-amount" type="number" name="amount">
-            </div>
-            <div class="inline-button">
-                <button class="btn-inline" id="btn-deposit">Deposit</button>
-                <button class="btn-inline" id="btn-withdraw">Withdraw</button>
+            <div>
+                <div class="input-wrapper">
+                    <label>Amount :</label>
+                    <input id="input-amount" type="number" name="amount">
+                </div>
+                <div class="inline-button">
+                    <button class="btn-inline" id="btn-deposit">Deposit</button>
+                    <button class="btn-inline" id="btn-withdraw">Withdraw</button>
+                </div>
             </div>
             <div class="input-wrapper" id="display-box">
             </div>
